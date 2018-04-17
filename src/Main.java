@@ -8,7 +8,7 @@ public class Main
         JFrame frame = new JFrame("FormMain");
         frame.setContentPane(new FormMain().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(800, 500));
+        frame.setPreferredSize(new Dimension(800, 600));
         frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
