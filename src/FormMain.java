@@ -2,9 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
 
-public class FormMain
+public class FormMain extends JFrame
 {
     //region 控件定义
     private JButton btnDown6;
@@ -47,20 +46,28 @@ public class FormMain
 
     FormMain()
     {
+        InitializeComponent();
         ListenerDown();
         ListenerUp();
         ListenerStop();
         InitArray();
 
-        btnStart.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                Run();
-            }
-        });
+        btnStart.addActionListener(e ->
+                {
+                    Run();
+                }
+        );
 
+    }
+
+    private void InitializeComponent()
+    {
+        this.setContentPane(this.mainPanel);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setPreferredSize(new Dimension(800, 600));
+        this.setLocationRelativeTo(null);
+        this.pack();
+        this.setVisible(true);
     }
 
     private void Run()
@@ -248,157 +255,93 @@ public class FormMain
 
     private void ListenerDown()
     {
-        btnDown6.addActionListener(new ActionListener()
+        btnDown6.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                down[5]=true;
-                btnDown6.setForeground(Color.RED);
-            }
+            down[5]=true;
+            btnDown6.setForeground(Color.RED);
         });
-        btnDown5.addActionListener(new ActionListener()
+        btnDown5.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                down[4]=true;
-                btnDown5.setForeground(Color.RED);
-            }
+            down[4]=true;
+            btnDown5.setForeground(Color.RED);
         });
-        btnDown4.addActionListener(new ActionListener()
+        btnDown4.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                down[3]=true;
-                btnDown4.setForeground(Color.RED);
-            }
+            down[3]=true;
+            btnDown4.setForeground(Color.RED);
         });
-        btnDown3.addActionListener(new ActionListener()
+        btnDown3.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                down[2]=true;
-                btnDown3.setForeground(Color.RED);
-            }
+            down[2]=true;
+            btnDown3.setForeground(Color.RED);
         });
-        btnDown2.addActionListener(new ActionListener()
+        btnDown2.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                down[1]=true;
-                btnDown2.setForeground(Color.RED);
-            }
+            down[1]=true;
+            btnDown2.setForeground(Color.RED);
         });
     }
 
     private void ListenerUp()
     {
-        btnUp1.addActionListener(new ActionListener()
+        btnUp1.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                up[0]=true;
-                btnUp1.setForeground(Color.RED);
-            }
+            up[0]=true;
+            btnUp1.setForeground(Color.RED);
         });
-        btnUp2.addActionListener(new ActionListener()
+        btnUp2.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                up[1]=true;
-                btnUp2.setForeground(Color.RED);
-            }
+            up[1]=true;
+            btnUp2.setForeground(Color.RED);
         });
-        btnUp3.addActionListener(new ActionListener()
+        btnUp3.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                up[2]=true;
-                btnUp3.setForeground(Color.RED);
-            }
+            up[2]=true;
+            btnUp3.setForeground(Color.RED);
         });
-        btnUp4.addActionListener(new ActionListener()
+        btnUp4.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                up[3]=true;
-                btnUp4.setForeground(Color.RED);
-            }
+            up[3]=true;
+            btnUp4.setForeground(Color.RED);
         });
-        btnUp5.addActionListener(new ActionListener()
+        btnUp5.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                up[4]=true;
-                btnUp5.setForeground(Color.RED);
-            }
+            up[4]=true;
+            btnUp5.setForeground(Color.RED);
         });
     }
 
     private void ListenerStop()
     {
-        btnStop6.addActionListener(new ActionListener()
+        btnStop6.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                stop[5]=true;
-                btnStop6.setForeground(Color.RED);
-            }
+            stop[5]=true;
+            btnStop6.setForeground(Color.RED);
         });
-        btnStop5.addActionListener(new ActionListener()
+        btnStop5.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                stop[4]=true;
-                btnStop5.setForeground(Color.RED);
-            }
+            stop[4]=true;
+            btnStop5.setForeground(Color.RED);
         });
-        btnStop4.addActionListener(new ActionListener()
+        btnStop4.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                stop[3]=true;
-                btnStop4.setForeground(Color.RED);
-            }
+            stop[3]=true;
+            btnStop4.setForeground(Color.RED);
         });
-        btnStop3.addActionListener(new ActionListener()
+        btnStop3.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                stop[2]=true;
-                btnStop3.setForeground(Color.RED);
-            }
+            stop[2]=true;
+            btnStop3.setForeground(Color.RED);
         });
-        btnStop2.addActionListener(new ActionListener()
+        btnStop2.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                stop[1]=true;
-                btnStop2.setForeground(Color.RED);
-            }
+            stop[1]=true;
+            btnStop2.setForeground(Color.RED);
         });
-        btnStop1.addActionListener(new ActionListener()
+        btnStop1.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                stop[0]=true;
-                btnStop1.setForeground(Color.RED);
-            }
+            stop[0]=true;
+            btnStop1.setForeground(Color.RED);
         });
     }
 
