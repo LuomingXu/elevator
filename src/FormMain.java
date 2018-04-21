@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FormMain extends JFrame
+public class FormMain extends JFrame implements Runnable
 {
     //region 控件定义
     private JButton btnDown6;
@@ -28,22 +28,22 @@ public class FormMain extends JFrame
     private JLabel lblStatus;
     //endregion
 
-    private Elevator elevator=new Elevator(Elevator.ElevStatus.up,6);
+    public Elevator elevator=new Elevator(Elevator.ElevStatus.up,6);
 
-    private boolean down6=false;
-    private boolean up5=false;private boolean down5=false;
-    private boolean up4=false;private boolean down4=false;
-    private boolean up3=false;private boolean down3=false;
-    private boolean up2=false;private boolean down2=false;
-    private boolean up1=false;
-    private boolean stop1=false;private boolean stop2=false;
-    private boolean stop3=false;private boolean stop4=false;
-    private boolean stop5=false;private boolean stop6=false;
+//    private boolean down6=false;
+//    private boolean up5=false;private boolean down5=false;
+//    private boolean up4=false;private boolean down4=false;
+//    private boolean up3=false;private boolean down3=false;
+//    private boolean up2=false;private boolean down2=false;
+//    private boolean up1=false;
+//    private boolean stop1=false;private boolean stop2=false;
+//    private boolean stop3=false;private boolean stop4=false;
+//    private boolean stop5=false;private boolean stop6=false;
 
-    private boolean[] up=new boolean[6];//0-4
-    private boolean[] down=new boolean[6];//1-5
-    private boolean[] stop=new boolean[6];//0-5
-
+    public boolean[] up=new boolean[6];//0-4
+    public boolean[] down=new boolean[6];//1-5
+    public boolean[] stop=new boolean[6];//0-5
+    private boolean isThreadStop=false;
     FormMain()
     {
         InitializeComponent();
@@ -52,9 +52,14 @@ public class FormMain extends JFrame
         ListenerStop();
         InitArray();
 
+        Thread t=new Thread(this);
+        //t.start();
+
         btnStart.addActionListener(e ->
                 {
-                    Run();
+//                    ElevRun elevRun=new ElevRun(this);
+//                    elevRun.Run();
+                    t.start();
                 }
         );
 
@@ -70,13 +75,20 @@ public class FormMain extends JFrame
         this.setVisible(true);
     }
 
+    @Override
+    public void run()
+    {
+        while (true)
+            Run();
+    }
+
     private void Run()
     {
         try
         {
             while (elevator.status == Elevator.ElevStatus.up)
             {
-                for (int i=elevator.getFloor() - 1; i<6; i++)
+                for (int i=1/*elevator.getFloor() - 1*/; i<6; i++)
                 {
                     if (up[i] == true && i != 5)
                     {
@@ -89,13 +101,18 @@ public class FormMain extends JFrame
                     else
                     {
                         elevNothingStop();
-                        Thread.sleep(1000);
+                        ElevRun.sleep();
+                    }
+
+                    if (i == 5 && down[5] == true)//第六层的down特殊处理
+                    {
+                        elevDownStop(i);
                     }
                 }
             }
             while (elevator.status == Elevator.ElevStatus.down)
             {
-                for (int i=elevator.getFloor() - 1; i>-1;i--)
+                for (int i=5/*elevator.getFloor() - 1*/; i>-1;i--)
                 {
                     if (down[i] == true && i != 0)
                     {
@@ -108,7 +125,12 @@ public class FormMain extends JFrame
                     else
                     {
                         elevNothingStop();
-                        Thread.sleep(1000);
+                        ElevRun.sleep();
+                    }
+
+                    if (i == 0 && up[0] == true)//第一层的up特殊处理
+                    {
+                        elevUpStop(i);
                     }
                 }
             }
@@ -121,12 +143,12 @@ public class FormMain extends JFrame
         }
     }
 
-    private void elevUpStop(int i)
+    public void elevUpStop(int i)
     {
         try
         {
             elevator.status= Elevator.ElevStatus.open;setLblStatus();setLblFloor();
-            Thread.sleep(1000);
+            ElevRun.sleep();
             elevator.status= Elevator.ElevStatus.up;setLblStatus();setLblFloor();
             elevator.ElevMove();
             switch (i)
@@ -155,12 +177,12 @@ public class FormMain extends JFrame
             e.printStackTrace();
         }
     }
-    private void elevDownStop(int i)
+    public void elevDownStop(int i)
     {
         try
         {
             elevator.status= Elevator.ElevStatus.open;setLblStatus();setLblFloor();
-            Thread.sleep(1000);
+            ElevRun.sleep();
             elevator.status= Elevator.ElevStatus.down;setLblStatus();setLblFloor();
             elevator.ElevMove();
             switch (i)
@@ -190,13 +212,13 @@ public class FormMain extends JFrame
         }
     }
 
-    private void elevStopStop(int i)
+    public void elevStopStop(int i)
     {
         try
         {
             Elevator.ElevStatus temp=elevator.status;
             elevator.status= Elevator.ElevStatus.open;setLblStatus();setLblFloor();
-            Thread.sleep(1000);
+            ElevRun.sleep();
             elevator.status=temp;
             switch (i)
             {
@@ -227,18 +249,18 @@ public class FormMain extends JFrame
             System.out.println("error: " + e);
         }
     }
-    private void elevNothingStop()
+    public void elevNothingStop()
     {
         elevator.ElevMove();
         setLblFloor();
         setLblStatus();
     }
 
-    private void setLblStatus()
+    public void setLblStatus()
     {
         lblStatus.setText(elevator.getElevStatus());
     }
-    private void setLblFloor()
+    public void setLblFloor()
     {
         lblFloor.setText(Integer.toString(elevator.getFloor()));
     }
@@ -344,6 +366,8 @@ public class FormMain extends JFrame
             btnStop1.setForeground(Color.RED);
         });
     }
+
+
 
 //    private boolean JudgeTxtBoxIsLegal()
 //    {

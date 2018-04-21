@@ -226,7 +226,7 @@
         </constraints>
         <properties>
           <font size="36"/>
-          <text value="开始"/>
+          <text value="中止"/>
         </properties>
       </component>
       <component id="87764" class="javax.swing.JButton" binding="btnStop6">
