@@ -14,7 +14,7 @@ public class Elevator
     public ElevStatus status = ElevStatus.stop;//电梯状态
     public enum ElevStatus
     {
-        up,down,stop,open//上升,下降,静止
+        up,down,stop,open//上升,下降,静止,开门
     }
 
     public int getFloor()
@@ -23,14 +23,14 @@ public class Elevator
     }
     public String getElevStatus()
     {
-        if (status == ElevStatus.stop)
-            return "stop";
-        else if(status == ElevStatus.up)
-            return "up";
-        else if(status == ElevStatus.down)
-            return "down";
-
-        return "stop";
+        switch (status)
+        {
+            case up: return "up";
+            case down: return "down";
+            case stop: return "stop";
+            case open: return "open";
+            default: return null;
+        }
     }
 
     public int ElevMove()
@@ -49,34 +49,4 @@ public class Elevator
 
         return floor;
     }
-
-//    public int ElevUp() throws Exception
-//    {
-//        if ((++floor) > maxFloor)
-//            throw new Exception("Beyond maximum floor !");
-//        else
-//            return ++floor;
-//    }
-//    public int ElevUp(int upFloor) throws Exception
-//    {
-//        if ((floor+upFloor) > maxFloor)
-//            throw new Exception("Beyond maximum floor !");
-//        else
-//            return floor+upFloor;
-//    }
-//
-//    public int ElevDown() throws Exception
-//    {
-//        if ((--floor) < 1)
-//            throw new Exception("Beyond minimum floor !");
-//        else
-//            return --floor;
-//    }
-//    public int ElevDown(int downFloor) throws Exception
-//    {
-//        if ((floor-downFloor) < 1)
-//            throw new Exception("Beyond minimum floor !");
-//        else
-//            return floor-downFloor;
-//    }
 }

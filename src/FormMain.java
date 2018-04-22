@@ -26,6 +26,7 @@ public class FormMain extends JFrame implements Runnable
     private JButton btnStop2;
     private JButton btnStop1;
     private JLabel lblStatus;
+    private JLabel lblTotalStatus;
     //endregion
 
     public Elevator elevator=new Elevator(Elevator.ElevStatus.up,6);
@@ -88,8 +89,11 @@ public class FormMain extends JFrame implements Runnable
         {
             while (elevator.status == Elevator.ElevStatus.up)
             {
+                lblTotalStatus.setText("up");
                 for (int i=1/*elevator.getFloor() - 1*/; i<6; i++)
                 {
+                    System.out.println("i= "+i);
+                    System.out.println(String.format("up[%s]= "+up[i],i));
                     if (up[i] == true && i != 5)
                     {
                         elevUpStop(i);
@@ -98,22 +102,23 @@ public class FormMain extends JFrame implements Runnable
                     {
                         elevStopStop(i);
                     }
-                    else
-                    {
-                        elevNothingStop();
-                        ElevRun.sleep();
-                    }
-
-                    if (i == 5 && down[5] == true)//第六层的down特殊处理
+                    else if (i == 5 && down[5] == true)//第六层的down特殊处理
                     {
                         elevDownStop(i);
+                    }
+                    else
+                    {
+                        elevNothingStop(i);
+                        ElevRun.sleep();
                     }
                 }
             }
             while (elevator.status == Elevator.ElevStatus.down)
             {
-                for (int i=5/*elevator.getFloor() - 1*/; i>-1;i--)
+                lblTotalStatus.setText("down");
+                for (int i=4/*elevator.getFloor() - 1*/; i>-1;i--)
                 {
+                    System.out.println("i= "+i);
                     if (down[i] == true && i != 0)
                     {
                         elevDownStop(i);
@@ -122,20 +127,17 @@ public class FormMain extends JFrame implements Runnable
                     {
                         elevStopStop(i);
                     }
-                    else
-                    {
-                        elevNothingStop();
-                        ElevRun.sleep();
-                    }
-
-                    if (i == 0 && up[0] == true)//第一层的up特殊处理
+                    else if (i == 0 && up[0] == true)//第一层的up特殊处理
                     {
                         elevUpStop(i);
                     }
+                    else
+                    {
+                        elevNothingStop(i);
+                        ElevRun.sleep();
+                    }
                 }
             }
-//            lblFloor.setText(Integer.toString(elevator.ElevMove()));
-//            lblStatus.setText(elevator.getElevStatus());
         }
         catch(Exception e)
         {
@@ -147,9 +149,14 @@ public class FormMain extends JFrame implements Runnable
     {
         try
         {
-            elevator.status= Elevator.ElevStatus.open;setLblStatus();setLblFloor();
+            elevator.status= Elevator.ElevStatus.open;
+            setLblStatus();
+            setLblFloor(i);
             ElevRun.sleep();
-            elevator.status= Elevator.ElevStatus.up;setLblStatus();setLblFloor();
+            elevator.status= Elevator.ElevStatus.up;
+            setLblStatus();
+            //setLblFloor(i);
+            ElevRun.sleep();
             elevator.ElevMove();
             switch (i)
             {
@@ -181,25 +188,30 @@ public class FormMain extends JFrame implements Runnable
     {
         try
         {
-            elevator.status= Elevator.ElevStatus.open;setLblStatus();setLblFloor();
+            elevator.status= Elevator.ElevStatus.open;
+            setLblStatus();
+            setLblFloor(i);
             ElevRun.sleep();
-            elevator.status= Elevator.ElevStatus.down;setLblStatus();setLblFloor();
+            elevator.status= Elevator.ElevStatus.down;
+            setLblStatus();
+            //setLblFloor(i);
+            ElevRun.sleep();
             elevator.ElevMove();
             switch (i)
             {
-                case 1:up[1]=false;btnDown2.setForeground(Color.BLACK);
+                case 1:down[1]=false;btnDown2.setForeground(Color.BLACK);
                     stop[1]=false;btnStop2.setForeground(Color.BLACK);
                     break;
-                case 2:up[2]=false;btnDown3.setForeground(Color.BLACK);
+                case 2:down[2]=false;btnDown3.setForeground(Color.BLACK);
                     stop[2]=false;btnStop3.setForeground(Color.BLACK);
                     break;
-                case 3:up[3]=false;btnDown4.setForeground(Color.BLACK);
+                case 3:down[3]=false;btnDown4.setForeground(Color.BLACK);
                     stop[3]=false;btnStop4.setForeground(Color.BLACK);
                     break;
-                case 4:up[4]=false;btnDown5.setForeground(Color.BLACK);
+                case 4:down[4]=false;btnDown5.setForeground(Color.BLACK);
                     stop[4]=false;btnStop5.setForeground(Color.BLACK);
                     break;
-                case 5:up[5]=false;btnDown6.setForeground(Color.BLACK);
+                case 5:down[5]=false;btnDown6.setForeground(Color.BLACK);
                     stop[5]=false;btnStop6.setForeground(Color.BLACK);
                     break;
                 default:
@@ -216,8 +228,13 @@ public class FormMain extends JFrame implements Runnable
     {
         try
         {
+            setLblStatus();
+            setLblFloor(i);
+            ElevRun.sleep();
             Elevator.ElevStatus temp=elevator.status;
-            elevator.status= Elevator.ElevStatus.open;setLblStatus();setLblFloor();
+            elevator.status= Elevator.ElevStatus.open;
+            setLblStatus();
+            //setLblFloor(i);
             ElevRun.sleep();
             elevator.status=temp;
             switch (i)
@@ -249,20 +266,20 @@ public class FormMain extends JFrame implements Runnable
             System.out.println("error: " + e);
         }
     }
-    public void elevNothingStop()
+    public void elevNothingStop(int i)
     {
-        elevator.ElevMove();
-        setLblFloor();
+        setLblFloor(i);
         setLblStatus();
+        elevator.ElevMove();
     }
 
     public void setLblStatus()
     {
         lblStatus.setText(elevator.getElevStatus());
     }
-    public void setLblFloor()
+    public void setLblFloor(int i)
     {
-        lblFloor.setText(Integer.toString(elevator.getFloor()));
+        lblFloor.setText(Integer.toString(i+1));
     }
 
     private void InitArray()
@@ -366,8 +383,6 @@ public class FormMain extends JFrame implements Runnable
             btnStop1.setForeground(Color.RED);
         });
     }
-
-
 
 //    private boolean JudgeTxtBoxIsLegal()
 //    {
